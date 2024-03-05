@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import random
 import os
+import math
 def draw_square():
     size = random.randint(50, min(screen_width, screen_height) // 4)
     x1, y1 = random.randint(1, screen_width-size), random.randint(1, screen_height-size)
@@ -54,6 +55,39 @@ def draw_star():
     color = random.choice(colors)
     canvas.create_polygon(points, fill=color, outline=color)
 
+def draw_hexagon():
+    side_length = random.randint(50, min(screen_width, screen_height) // 8)
+    x_center, y_center = random.randint(side_length, screen_width - side_length), random.randint(side_length,
+                                                                                                 screen_height - side_length)
+
+    # Calculate the points for a hexagon
+    points = []
+    for i in range(6):
+        angle_deg = 60 * i - 30
+        angle_rad = math.pi / 180 * angle_deg
+        points.append(x_center + side_length * math.cos(angle_rad))
+        points.append(y_center + side_length * math.sin(angle_rad))
+
+    color = random.choice(colors)
+    canvas.create_polygon(points, fill=color, outline=color)
+
+
+def draw_octagon():
+    side_length = random.randint(50, min(screen_width, screen_height) // 8)
+    x_center, y_center = random.randint(side_length, screen_width - side_length), random.randint(side_length,
+                                                                                                 screen_height - side_length)
+
+    # Calculate the points for an octagon
+    points = []
+    for i in range(8):
+        angle_deg = 45 * i
+        angle_rad = math.pi / 180 * angle_deg
+        points.append(x_center + side_length * math.cos(angle_rad))
+        points.append(y_center + side_length * math.sin(angle_rad))
+
+    color = random.choice(colors)
+    canvas.create_polygon(points, fill=color, outline=color)
+
 def clear_canvas():
     canvas.delete("all")
 
@@ -81,8 +115,8 @@ def create_image_button(frame, image_path, command, width, height):
     button.pack(pady=10)
     return button
 
-image_names = ["circle", "square", "oval", "rectangle", "triangle", "star"]
-shape_functions = [draw_circle, draw_square, draw_oval, draw_rectangle, draw_triangle, draw_star]
+image_names = ["circle", "square", "oval", "rectangle", "triangle", "star", "hexagon", "octagon"]
+shape_functions = [draw_circle, draw_square, draw_oval, draw_rectangle, draw_triangle, draw_star, draw_hexagon, draw_octagon]
 
 for name, func in zip(image_names, shape_functions):
     img_path = os.path.join("Images", f"{name}.png")
