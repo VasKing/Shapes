@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import random
-
+import os
 def draw_square():
     size = random.randint(50, min(screen_width, screen_height) // 4)
     x1, y1 = random.randint(1, screen_width-size), random.randint(1, screen_height-size)
@@ -41,19 +41,23 @@ window.state('zoomed')  # This makes the window maximized
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
 
-# Create a canvas for drawing
+colors = ['Red', 'Yellow', 'Blue', 'Green', 'Orange', 'Purple', 'Black', 'Gray']
 canvas = tk.Canvas(window, width=screen_width-100, height=screen_height)
 canvas.pack(side='right', fill='both', expand=True)
 
-# Shape buttons with icons (using simple text for demonstration)
 buttons_frame = tk.Frame(window, width=100, height=screen_height)
 buttons_frame.pack(side='left', fill='y')
 
-# Adding buttons for each shape
-shapes = [('□', draw_square), ('○', draw_circle), ('⬭', draw_oval), ('▭', draw_rectangle)]
-for shape_text, shape_func in shapes:
-    button = ttk.Button(buttons_frame, text=shape_text, command=shape_func)
-    button.pack(pady=20)
+# Load images and create buttons
+image_names = ["circle", "square", "oval", "rectangle"]  # Add the rest of your shape names here
+shape_functions = [draw_circle, draw_square]  # Add the rest of your drawing functions here
+
+for name, func in zip(image_names, shape_functions):
+    img_path = os.path.join("Images", f"{name}.png")
+    img = tk.PhotoImage(file=img_path)
+    button = tk.Button(buttons_frame, image=img, command=func)
+    button.image = img  # Keep a reference!
+    button.pack(pady=10)
 
 window.mainloop()
 
