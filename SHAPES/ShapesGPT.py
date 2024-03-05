@@ -29,15 +29,10 @@ def draw_rectangle():
     color = random.choice(colors)
     canvas.create_rectangle(x1, y1, x1+width, y1+height, fill=color, outline=color)
 
-# Screen size and colors
-screen_width, screen_height = 1920, 1080  # Placeholder values, will be updated dynamically
-colors = ['Red', 'Yellow', 'Blue', 'Green', 'Orange', 'Purple', 'Black', 'Gray']
-
 window = tk.Tk()
-window.title("Shapes Drawing Program")
+window.title("Shapes! (V.Aristotelous@2024")
 
-# Dynamically adjusting to the screen size
-window.state('zoomed')  # This makes the window maximized
+window.state('zoomed')
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
 
@@ -50,7 +45,7 @@ buttons_frame.pack(side='left', fill='y')
 
 # Load images and create buttons
 image_names = ["circle", "square", "oval", "rectangle"]  # Add the rest of your shape names here
-shape_functions = [draw_circle, draw_square]  # Add the rest of your drawing functions here
+shape_functions = [draw_circle, draw_square, draw_oval, draw_rectangle]  # Add the rest of your drawing functions here
 
 for name, func in zip(image_names, shape_functions):
     img_path = os.path.join("Images", f"{name}.png")
