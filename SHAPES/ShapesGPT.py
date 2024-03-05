@@ -40,6 +40,9 @@ colors = ['Red', 'Yellow', 'Blue', 'Green', 'Orange', 'Purple', 'Black', 'Gray']
 canvas = tk.Canvas(window, width=screen_width-100, height=screen_height)
 canvas.pack(side='right', fill='both', expand=True)
 
+def clear_canvas():
+    canvas.delete("all")
+
 buttons_frame = tk.Frame(window, width=100, height=screen_height)
 buttons_frame.pack(side='left', fill='y')
 
@@ -53,6 +56,12 @@ for name, func in zip(image_names, shape_functions):
     button = tk.Button(buttons_frame, image=img, command=func)
     button.image = img  # Keep a reference!
     button.pack(pady=10)
+
+img_path = os.path.join("Images", "Clean.png")  # Use the Clean.png image for the button
+clean_img = tk.PhotoImage(file=img_path)
+clean_button = tk.Button(buttons_frame, image=clean_img, command=clear_canvas)
+clean_button.image = clean_img  # Keep a reference to the image to prevent garbage collection
+clean_button.pack(side='bottom', pady=10)
 
 window.mainloop()
 
