@@ -30,12 +30,35 @@ def draw_rectangle():
     color = random.choice(colors)
     canvas.create_rectangle(x1, y1, x1+width, y1+height, fill=color, outline=color)
 
+def rotate_point(x, y, origin_x, origin_y, angle):
+    """Rotate a point around another center point. Angle in radians."""
+    cos_angle = math.cos(angle)
+    sin_angle = math.sin(angle)
+    x_rotated = cos_angle * (x - origin_x) - sin_angle * (y - origin_y) + origin_x
+    y_rotated = sin_angle * (x - origin_x) + cos_angle * (y - origin_y) + origin_y
+    return x_rotated, y_rotated
+
 def draw_triangle():
     size = random.randint(50, min(screen_width, screen_height) // 4)
     x1, y1 = random.randint(1, screen_width-size), random.randint(1, screen_height-size)
     points = [x1, y1, x1 + size, y1, x1 + size / 2, y1 - size]
+
+    # Calculate the center of the triangle for rotation
+    center_x = sum(points[::2]) / 3
+    center_y = sum(points[1::2]) / 3
+
+    # Random rotation angle in radians
+    rotation_angle = random.uniform(0, math.pi * 2)
+
+    # Rotate each point around the center
+    rotated_points = []
+    for i in range(0, len(points), 2):
+        x_rotated, y_rotated = rotate_point(points[i], points[i+1], center_x, center_y, rotation_angle)
+        rotated_points.extend([x_rotated, y_rotated])
+
     color = random.choice(colors)
-    canvas.create_polygon(points, fill=color, outline=color)
+    canvas.create_polygon(rotated_points, fill=color, outline=color)
+
 
 def draw_star():
     size = random.randint(50, min(screen_width, screen_height) // 4)
@@ -70,7 +93,6 @@ def draw_hexagon():
 
     color = random.choice(colors)
     canvas.create_polygon(points, fill=color, outline=color)
-
 
 def draw_octagon():
     side_length = random.randint(50, min(screen_width, screen_height) // 8)
