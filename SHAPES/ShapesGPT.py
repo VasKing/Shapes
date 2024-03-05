@@ -29,6 +29,31 @@ def draw_rectangle():
     color = random.choice(colors)
     canvas.create_rectangle(x1, y1, x1+width, y1+height, fill=color, outline=color)
 
+def draw_triangle():
+    size = random.randint(50, min(screen_width, screen_height) // 4)
+    x1, y1 = random.randint(1, screen_width-size), random.randint(1, screen_height-size)
+    points = [x1, y1, x1 + size, y1, x1 + size / 2, y1 - size]
+    color = random.choice(colors)
+    canvas.create_polygon(points, fill=color, outline=color)
+
+def draw_star():
+    size = random.randint(50, min(screen_width, screen_height) // 4)
+    x1, y1 = random.randint(1, screen_width-size), random.randint(1, screen_height-size)
+    points = [
+        x1 + size * 0.5, y1,
+        x1 + size * 0.6, y1 + size * 0.4,
+        x1 + size, y1 + size * 0.4,
+        x1 + size * 0.65, y1 + size * 0.6,
+        x1 + size * 0.75, y1 + size,
+        x1 + size * 0.5, y1 + size * 0.75,
+        x1 + size * 0.25, y1 + size,
+        x1 + size * 0.35, y1 + size * 0.6,
+        x1, y1 + size * 0.4,
+        x1 + size * 0.4, y1 + size * 0.4
+    ]
+    color = random.choice(colors)
+    canvas.create_polygon(points, fill=color, outline=color)
+
 def clear_canvas():
     canvas.delete("all")
 
@@ -56,8 +81,8 @@ def create_image_button(frame, image_path, command, width, height):
     button.pack(pady=10)
     return button
 
-image_names = ["circle", "square", "oval", "rectangle"]
-shape_functions = [draw_circle, draw_square, draw_oval, draw_rectangle]
+image_names = ["circle", "square", "oval", "rectangle", "triangle", "star"]
+shape_functions = [draw_circle, draw_square, draw_oval, draw_rectangle, draw_triangle, draw_star]
 
 for name, func in zip(image_names, shape_functions):
     img_path = os.path.join("Images", f"{name}.png")
