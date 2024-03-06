@@ -16,11 +16,15 @@ def draw_circle():
     canvas.create_oval(x1, y1, x1+size, y1+size, fill=color, outline=color)
 
 def draw_oval():
-    # Random size for the oval. Width and height will vary, creating the oval effect.
-    width = random.randint(50, min(screen_width, screen_height) // 4)
-    height = random.randint(50, min(screen_width, screen_height) // 4)
+    # Adjusted maximum size for more substantial ovals
+    width = random.randint(50, min(screen_width, screen_height) // 2)  # Increased upper limit
+    height = random.randint(50, min(screen_width, screen_height) // 2)  # Increased upper limit
     x1, y1 = random.randint(1, screen_width-width), random.randint(1, screen_height-height)
-    color = random.choice(colors)
+
+    # Adjust color choice to favor orange
+    colors_with_more_orange = ['Orange'] * 3 + ['Red', 'Yellow', 'Blue', 'Green', 'Purple', 'Black', 'Gray']  # Tripling the occurrence of Orange
+    color = random.choice(colors_with_more_orange)
+
     canvas.create_oval(x1, y1, x1+width, y1+height, fill=color, outline=color)
 
 def draw_rectangle():
@@ -39,18 +43,22 @@ def rotate_point(x, y, origin_x, origin_y, angle):
     return x_rotated, y_rotated
 
 def draw_triangle():
-    size = random.randint(50, min(screen_width, screen_height) // 4)
-    x1, y1 = random.randint(1, screen_width-size), random.randint(1, screen_height-size)
+    # Define a safe margin and maximum size for the triangle
+    margin = 10  # A margin to ensure the shape is not drawn too close to the edge
+    max_size = min(screen_width, screen_height) // 4  # Maximum size of the triangle
+
+    # Adjust the starting position based on the maximum size and margin
+    x1 = random.randint(margin, screen_width - max_size - margin)
+    y1 = random.randint(margin + max_size, screen_height - margin)  # Ensure there's space above for the triangle
+
+    # Calculate points for the triangle with respect to the new safe starting position
+    size = random.randint(50, max_size)
     points = [x1, y1, x1 + size, y1, x1 + size / 2, y1 - size]
 
-    # Calculate the center of the triangle for rotation
+    # Rotate the triangle for added variety
     center_x = sum(points[::2]) / 3
     center_y = sum(points[1::2]) / 3
-
-    # Random rotation angle in radians
-    rotation_angle = random.uniform(0, math.pi * 2)
-
-    # Rotate each point around the center
+    rotation_angle = random.uniform(0, math.pi * 2)  # Random rotation angle
     rotated_points = []
     for i in range(0, len(points), 2):
         x_rotated, y_rotated = rotate_point(points[i], points[i+1], center_x, center_y, rotation_angle)
@@ -58,7 +66,6 @@ def draw_triangle():
 
     color = random.choice(colors)
     canvas.create_polygon(rotated_points, fill=color, outline=color)
-
 
 def draw_star():
     size = random.randint(50, min(screen_width, screen_height) // 4)
@@ -110,6 +117,26 @@ def draw_octagon():
     color = random.choice(colors)
     canvas.create_polygon(points, fill=color, outline=color)
 
+
+def draw_diamond():
+    # Define the size of the diamond
+    size = random.randint(50, min(screen_width, screen_height) // 4)
+
+    # Calculate the center position ensuring the whole diamond fits within the canvas
+    center_x = random.randint(size, screen_width - size)
+    center_y = random.randint(size, screen_height - size)
+
+    # Points for the diamond (a rotated square)
+    points = [
+        center_x, center_y - size // 2,  # Top point
+                  center_x + size // 2, center_y,  # Right point
+        center_x, center_y + size // 2,  # Bottom point
+                  center_x - size // 2, center_y  # Left point
+    ]
+
+    color = random.choice(colors)
+    canvas.create_polygon(points, fill=color, outline=color)
+
 def clear_canvas():
     canvas.delete("all")
 
@@ -137,8 +164,8 @@ def create_image_button(frame, image_path, command, width, height):
     button.pack(pady=10)
     return button
 
-image_names = ["circle", "square", "oval", "rectangle", "triangle", "star", "hexagon", "octagon"]
-shape_functions = [draw_circle, draw_square, draw_oval, draw_rectangle, draw_triangle, draw_star, draw_hexagon, draw_octagon]
+image_names = ["circle", "square", "oval", "rectangle", "triangle", "star", "hexagon", "octagon", "diamond"]
+shape_functions = [draw_circle, draw_square, draw_oval, draw_rectangle, draw_triangle, draw_star, draw_hexagon, draw_octagon, draw_diamond]
 
 for name, func in zip(image_names, shape_functions):
     img_path = os.path.join("Images", f"{name}.png")
